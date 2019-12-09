@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/GenericReport/Content/upload/test.xlsx
+/GenericReport/Content/upload/2019-09-12--16-01-47.xlsx
+/GenericReport/Content/upload/2019-09-12--15-59-48.xlsx

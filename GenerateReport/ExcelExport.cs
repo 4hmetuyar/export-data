@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace GenerateReport
@@ -16,7 +17,7 @@ namespace GenerateReport
         /// <param name="fileName"></param>
         /// <param name="sheetName"></param>
         /// <returns></returns>
-        public static bool ToExcelFile(IEnumerable<T> enumerable, string fileName, string sheetName)
+        public static async Task<bool> ToExcelFile(IEnumerable<T> enumerable, string fileName, string sheetName)
         {
             try
             {
@@ -24,7 +25,7 @@ namespace GenerateReport
 
                 if (fileName == null) fileName = newGuid.ToString();
                 if (sheetName == null) sheetName = "sheet1";
-                DataTable convertToDataTable = ConvertToDataTable(enumerable);
+                DataTable convertToDataTable = await ConvertToDataTable(enumerable);
                 using (XLWorkbook xlWorkbook = new XLWorkbook())
                 {
                     xlWorkbook.Worksheets.Add(convertToDataTable, sheetName);
@@ -48,7 +49,7 @@ namespace GenerateReport
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static DataTable ConvertToDataTable<T>(IEnumerable<T> data)
+        public static async Task<DataTable> ConvertToDataTable<T>(IEnumerable<T> data)
         {
             PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
             DataTable table = new DataTable();

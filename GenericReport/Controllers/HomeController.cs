@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using GenerateReport;
@@ -9,10 +10,11 @@ namespace GenericReport.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            //example data.
             List<Student> students = new List<Student>();
-            for (int i = 0; i < 1048575; i++)
+            for (int i = 0; i < 148575; i++)
             {
                 students.Add(new Student
                 {
@@ -30,7 +32,7 @@ namespace GenericReport.Controllers
 
 
 
-            ExcelExport<Student>.ToExcelFile(students, DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss"), null);
+            await ExcelExport<Student>.ToExcelFile(students, DateTime.Now.ToString("yyyy-dd-M-HH-mm-ss"), sheetName: "example");
             return View();
         }
 
@@ -45,20 +47,6 @@ namespace GenericReport.Controllers
             public string Email4 { get; set; }
             public string Email5 { get; set; }
             public string Email6 { get; set; }
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
     }
 }

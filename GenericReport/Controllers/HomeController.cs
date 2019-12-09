@@ -10,7 +10,13 @@ namespace GenericReport.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
+        {
+            ExportData();
+            return View();
+        }
+
+        private void ExportData()
         {
             //example data.
             List<Student> students = new List<Student>();
@@ -32,8 +38,8 @@ namespace GenericReport.Controllers
 
 
 
-            await ExcelExport<Student>.ToExcelFile(students, DateTime.Now.ToString("yyyy-dd-M-HH-mm-ss"), sheetName: "example");
-            return View();
+            ExcelExport<Student>.ToExcelFile(students, DateTime.Now.ToString("yyyy-dd-M-HH-mm-ss"), sheetName: "example");
+
         }
 
         public class Student

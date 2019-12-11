@@ -1,10 +1,8 @@
-﻿using System;
+﻿using GenerateReport;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using GenerateReport;
 
 namespace GenericReport.Controllers
 {
@@ -12,15 +10,19 @@ namespace GenericReport.Controllers
     {
         public ActionResult Index()
         {
-            ExportData();
+            //Task.Factory.StartNew(() => ExportData());
+            var filePath = System.Web.HttpContext.Current.Server.MapPath($"/content/upload/{DateTime.Now:yyyy-dd-M-HH-mm-ss}.xlsx");
+
+            Task.Run(() => ExportData(filePath));
+
             return View();
         }
 
-        private void ExportData()
+        private void ExportData(string filePath)
         {
             //example data.
             List<Student> students = new List<Student>();
-            for (int i = 0; i < 148575; i++)
+            for (int i = 0; i < 100575; i++)
             {
                 students.Add(new Student
                 {
@@ -35,11 +37,7 @@ namespace GenericReport.Controllers
                     Email6 = " asjdfljsadfpjpamfoısadfmsafoa"
                 });
             }
-
-
-
-            ExcelExport<Student>.ToExcelFile(students, DateTime.Now.ToString("yyyy-dd-M-HH-mm-ss"), sheetName: "example");
-
+            ExcelExport<Student>.ToExcelFile(students, filePath, sheetName: "example");
         }
 
         public class Student

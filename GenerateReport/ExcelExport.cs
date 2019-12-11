@@ -3,32 +3,28 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace GenerateReport
 {
-    public class ExcelExport<T>
+    public static class ExcelExport<T>
     {
         /// <summary>
         /// Export excel generic type
         /// </summary>
         /// <param name="enumerable"></param>
-        /// <param name="fileName"></param>
+        /// <param name="filePath"></param>
         /// <param name="sheetName"></param>
         /// <returns></returns>
-        public static bool ToExcelFile(IEnumerable<T> enumerable, string fileName, string sheetName)
+        public static bool ToExcelFile(IEnumerable<T> enumerable, string filePath, string sheetName)
         {
+            if (filePath == null) throw new ArgumentNullException(nameof(filePath));
             try
             {
-                Guid newGuid = Guid.NewGuid();
-                if (fileName == null) fileName = newGuid.ToString();
                 if (sheetName == null) sheetName = "sheet1";
                 DataTable convertToDataTable = ConvertToDataTable(enumerable);
                 using (XLWorkbook xlWorkbook = new XLWorkbook())
                 {
                     xlWorkbook.Worksheets.Add(convertToDataTable, sheetName);
-                    var filePath = HttpContext.Current.Server.MapPath($"/content/upload/{fileName}.xlsx");
                     xlWorkbook.SaveAs(filePath);
                 }
                 return true;
@@ -38,8 +34,6 @@ namespace GenerateReport
                 //Logging.
                 return false;
             }
-
-
         }
 
         /// <summary>
